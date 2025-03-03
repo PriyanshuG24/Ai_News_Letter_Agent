@@ -14,7 +14,7 @@ const App = () => {
     setArticle("");
 
     try {
-      const response = await fetch("http://localhost:4000/generate-newsletter", {
+      const response = await fetch("https://ai-news-letter-agent-qkyf.vercel.app/generate-newsletter", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

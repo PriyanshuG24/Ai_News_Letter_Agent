@@ -8,7 +8,24 @@ import proofReadTask from "./tasks/proofReadTask.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = [
+  "https://ai-news-letter-generator.vercel.app", // Frontend URL
+  "http://localhost:5173", // Local development
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["POST", "GET"],
+    credentials: true, // Allow cookies & authentication headers
+  })
+);
 
 
 app.post("/generate-newsletter", async (req, res) => {
