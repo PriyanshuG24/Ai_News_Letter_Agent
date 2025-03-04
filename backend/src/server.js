@@ -8,25 +8,28 @@ import proofReadTask from "./tasks/proofReadTask.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
-const allowedOrigins = [
-  "https://ai-news-letter-generator.vercel.app", // Frontend URL
-  "http://localhost:5173", // Local development
-];
 
+const allowedOrigins = [
+  "https://ai-news-letter-agent.vercel.app", 
+  "http://localhost:5173", 
+];
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.log("Blocked origin:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: ["POST", "GET"],
-    credentials: true, // Allow cookies & authentication headers
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
 
+app.options("*", cors());
 
 app.post("/generate-newsletter", async (req, res) => {
   const { topic } = req.body;
