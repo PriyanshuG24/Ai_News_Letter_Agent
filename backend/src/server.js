@@ -14,7 +14,19 @@ const allowedOrigins = [
   "http://localhost:5173", 
 ];
 app.use(
-  cors()
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("Blocked origin:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"]
+  })
 );
 
 app.options("*", cors());
