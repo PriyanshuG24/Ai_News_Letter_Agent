@@ -30,7 +30,9 @@ app.use(
 );
 
 app.options("*", cors());
-
+app.get('/', (req, res) => {
+  res.send('Hello World')
+})
 app.post("/generate-newsletter", async (req, res) => {
   const { topic } = req.body;
   console.log("Topic received:", topic);
